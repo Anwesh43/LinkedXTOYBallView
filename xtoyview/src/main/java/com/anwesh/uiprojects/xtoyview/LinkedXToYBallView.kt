@@ -9,8 +9,23 @@ import android.view.MotionEvent
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.Canvas
+import android.graphics.Color
 
 val NODES : Int = 5
+
+fun Canvas.drawXTOYBallNode(i : Int, scale : Float, paint : Paint) {
+    paint.color = Color.parseColor("#e74c3c")
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val xGap : Float = (w / 2) / NODES
+    val yGap : Float = (h / 2) / NODES
+    val sc1 : Float = Math.min(0.5f, scale) * 2
+    val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
+    save()
+    translate(w / 2 + (i + 1) * xGap * sc2, h / 2 - (i + 1) * yGap * sc1)
+    drawCircle(0f, 0f, Math.min(xGap, yGap)/8, paint)
+    restore()
+}
 
 class LinkedXToYBallView(ctx : Context) : View(ctx) {
 
@@ -76,5 +91,4 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             }
         }
     }
-
 }
