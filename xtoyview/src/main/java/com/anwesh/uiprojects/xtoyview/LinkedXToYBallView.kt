@@ -162,4 +162,27 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             curr.startUpdating(startcb)
         }
     }
+
+    data class Renderer(var view : LinkedXToYBallView) {
+
+        private val linkedXTOYBall : LinkedXTOYBall = LinkedXTOYBall(0)
+
+        private var animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
+            linkedXTOYBall.draw(canvas, paint)
+            animator.animate {
+                linkedXTOYBall.update {i, scale ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            linkedXTOYBall.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
