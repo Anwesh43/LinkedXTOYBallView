@@ -22,9 +22,10 @@ fun Canvas.drawXTOYBallNode(i : Int, scale : Float, paint : Paint) {
     val yGap : Float = (h / 2) / NODES
     val sc1 : Float = Math.min(0.5f, scale) * 2
     val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
+    val r : Float = Math.min(xGap, yGap)/4
     save()
-    translate(w / 2 + (i + 1) * xGap * sc2, h / 2 - (i + 1) * yGap * sc1)
-    drawCircle(0f, 0f, Math.min(xGap, yGap)/8, paint)
+    translate(w / 2 - r + (w / 2 - i * xGap) * sc2, h / 2 + r - (i + 1) * yGap * (1 - sc1))
+    drawCircle(0f, 0f, r, paint)
     restore()
 }
 
@@ -135,6 +136,7 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             if (curr != null) {
                 return curr
             }
+            cb()
             return this
         }
     }
