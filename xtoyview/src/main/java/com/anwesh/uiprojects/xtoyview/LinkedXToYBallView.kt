@@ -135,4 +135,31 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class LinkedXTOYBall(var i : Int) {
+
+        private var root : XTOYBallNode = XTOYBallNode(0)
+
+        private var curr : XTOYBallNode = root
+
+        private var dir : Int = 1
+
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            root.draw(canvas, paint)
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit) {
+            curr.update {i, scale ->
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                stopcb(i, scale)
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            curr.startUpdating(startcb)
+        }
+    }
 }
