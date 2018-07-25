@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.xtoyview
  * Created by anweshmishra on 26/07/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
@@ -185,6 +186,15 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             linkedXTOYBall.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+
+        fun create(activity : Activity) : LinkedXToYBallView {
+            val view : LinkedXToYBallView = LinkedXToYBallView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
