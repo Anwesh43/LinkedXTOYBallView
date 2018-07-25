@@ -91,4 +91,48 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class XTOYBallNode(var i : Int, val state : State = State()) {
+
+        private var next : XTOYBallNode? = null
+
+        private var prev : XTOYBallNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < NODES - 1) {
+                next = XTOYBallNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawXTOYBallNode(i, state.scale, paint)
+            next?.draw(canvas, paint)
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit) {
+            state.update {
+                stopcb(i, it)
+            }
+        }
+
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : XTOYBallNode {
+            var curr : XTOYBallNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            return this
+        }
+    }
 }
