@@ -15,7 +15,6 @@ import android.graphics.Color
 val NODES : Int = 5
 
 fun Canvas.drawXTOYBallNode(i : Int, scale : Float, paint : Paint) {
-    paint.color = Color.parseColor("#e74c3c")
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
     val xGap : Float = (w / 2) / NODES
@@ -23,6 +22,12 @@ fun Canvas.drawXTOYBallNode(i : Int, scale : Float, paint : Paint) {
     val sc1 : Float = Math.min(0.5f, scale) * 2
     val sc2 : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
     val r : Float = Math.min(xGap, yGap)/4
+    val gap : Float = w / NODES
+    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = Color.parseColor("#4CAF50")
+    drawLine(i * gap, 0.9f * h, i * gap + gap * scale, 0.9f * h, paint)
+    paint.color = Color.parseColor("#e74c3c")
     save()
     translate(w / 2 - r + (w / 2 - i * xGap) * sc2, h / 2 + r - (i + 1) * yGap * (1 - sc1))
     drawCircle(0f, 0f, r, paint)
