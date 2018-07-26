@@ -40,6 +40,8 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
 
     private val renderer : Renderer = Renderer(this)
 
+    var onAnimationCompleteListener : OnAnimationCompleteListener ?= null
+
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
     }
@@ -51,6 +53,10 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             }
         }
         return true
+    }
+
+    fun addOnCompletionListener(onComplete : (Int) -> Unit, onReset : (Int) -> Unit) {
+        onAnimationCompleteListener = OnAnimationCompleteListener(onComplete, onReset)
     }
 
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
@@ -185,6 +191,10 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             animator.animate {
                 linkedXTOYBall.update {i, scale ->
                     animator.stop()
+                    when (scale) {
+                        0f -> view.onAnimationCompleteListener?.onReset?.invoke(i)
+                        1f -> view.onAnimationCompleteListener?.onComplete?.invoke(i)
+                    }
                 }
             }
         }
@@ -204,4 +214,6 @@ class LinkedXToYBallView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class OnAnimationCompleteListener(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
